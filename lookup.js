@@ -1,38 +1,31 @@
-document.getElementById('userLookupForm').addEventListener('submit', function (e) {
-    e.preventDefault();
+function searchBadgeID() {
+    var badgeId = document.getElementById("badgeIdInput").value;
+    var apiUrl = "https://pomry.sharepoint.com/:x:/r/sites/ADM-Canada/_api/web/GetFileByServerRelativeUrl('/sites/ADM-Canada/Shared%20Documents/Book.xlsx')/Sheets('Sheet1')";
 
-    const BadgeID = document.getElementById('BadgeID').value;
-
-    // SharePoint URL to your Excel file
-    const sharePointExcelURL = 'https://pomry.sharepoint.com/:x:/r/sites/ADM-Canada/Shared%20Documents/Book.xlsx?d=we3e3113235014887b2cb757de12ffcf0&csf=1&web=1&e=Z7pbkF';
-
-    // REST API URL to access Excel data
-    const excelDataAPI = `${sharePointExcelURL}/_vti_bin/ExcelRest.aspx/YourExcelSheet/Table?$filter=BadgeID eq '${BadgeID}'`;
-
-    fetch(excelDataAPI, {
-        method: 'GET',
+    $.ajax({
+        url: apiUrl,
+        method: "GET",
         headers: {
-            'Accept': 'application/json',
+            "Accept": "application/json; odata=verbose"
         },
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Process the retrieved data
-        if (data && data.d && data.d.results.length > 0) {
-            const result = data.d.results[0];
-            const Name = result.Name;
-            const OnSite = result['OnSite'];
+        success: function (data) {
+            if (data.d && data.d.Value && data.d.Value.length > 0) {
+                var result = data.d.Value.find(function (row) {
+                    return row.BadgeID === badgeId;
+                });
 
-            // Update the HTML elements
-            document.getElementById('Name').textContent = Name;
-            document.getElementById('OnSite').textContent = OnSite;
-        } else {
-            // Handle the case when BadgeID is not found
-            document.getElementById('Name').textContent = 'Not Found';
-            document.getElementById('OnSite').textContent = '';
+                if (result) {
+                    document.getElementById("result").innerHTML = "Name: " + result.Name;
+                } else {
+                    document.getElementById("result").innerHTML = "BadgeID not found.";
+                }
+            } else {
+                document.getElementById("result").innerHTML = "No data found.";
+            }
+        },
+        error: function (error) {
+            console.log("Error: " + JSON.stringify(error));
+            document.getElementById("result").innerHTML = "An error occurred: " + error.statusText;
         }
-    })
-    .catch(error => {
-        console.error(error);
     });
-});
+}
