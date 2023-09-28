@@ -13,7 +13,7 @@
     <script>
         function searchBadgeID() {
             var badgeId = document.getElementById("badgeIdInput").value;
-            var apiUrl = "https://pomry.sharepoint.com/:x:/r/sites/ADM-Canada/_api/web/GetFileByServerRelativeUrl('/sites/ADM-Canada/Shared%20Documents/Book.xlsx')/Sheets('Sheet1')/UsedRange?$filter=BadgeID eq '" + badgeId + "'";
+            var apiUrl = "https://pomry.sharepoint.com/:x:/r/sites/ADM-Canada/_api/web/GetFileByServerRelativeUrl('/sites/ADM-Canada/Shared%20Documents/Book.xlsx')/Sheets('Sheet1')";
 
             $.ajax({
                 url: apiUrl,
@@ -21,22 +21,31 @@
                 headers: {
                     "Accept": "application/json; odata=verbose"
                 },
-                success: function (data) {
-                    if (data.d && data.d.results && data.d.results.length > 0) {
-                        var name = data.d.results[0].Name;
-                        document.getElementById("result").innerHTML = "Name: " + name;
+                success: function (data, textStatus, xhr) {
+                    if (xhr.status === 200) {
+                        if (data.d && data.d.Value && data.d.Value.length > 0) {
+                            var result = data.d.Value.find(function (row) {
+                                return row.BadgeID === badgeId;
+                            });
+
+                            if (result) {
+                                document.getElementById("result").innerHTML = "Name: " + result.Name;
+                            } else {
+                                document.getElementById("result").innerHTML = "BadgeID not found.";
+                            }
+                        } else {
+                            document.getElementById("result").innerHTML = "No data found.";
+                        }
                     } else {
-                        document.getElementById("result").innerHTML = "BadgeID not found.";
+                        document.getElementById("result").innerHTML = "Failed to connect to the file (HTTP Status: " + xhr.status + ")";
                     }
                 },
                 error: function (error) {
                     console.log("Error: " + JSON.stringify(error));
-                    var errorMessage = "An error occurred: " + (error.responseJSON ? error.responseJSON.error.message.value : "Unknown error");
-                    document.getElementById("result").innerHTML = errorMessage;
+                    document.getElementById("result").innerHTML = "An error occurred: " + error.statusText;
                 }
             });
         }
     </script>
 </body>
 </html>
-
