@@ -1,5 +1,5 @@
 // Replace with your API endpoint or SharePoint URL where your Excel data is stored
-const excelDataURL = 'https://your-sharepoint-site/excel-data.csv';
+const excelDataURL = 'https://1drv.ms/x/s!Ai6aEqiA-s-Bg8VHV7Vfz1ftSpWgzQ?e=NjEUSD';
 
 document.getElementById('userLookupForm').addEventListener('submit', function (e) {
     e.preventDefault();
@@ -8,18 +8,22 @@ document.getElementById('userLookupForm').addEventListener('submit', function (e
 
     // Fetch Excel data using a library like fetch or axios
     fetch(excelDataURL)
-        .then(response => response.text())
+        .then(response => response.arrayBuffer())
         .then(data => {
-            const rows = data.split('\n');
+            const workbook = XLSX.read(new Uint8Array(data), { type: 'array' });
+            const sheetName = workbook.SheetNames[0]; // Assuming data is in the first sheet
+
+            // Parse the sheet into JSON format
+            const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+
             let userName = 'Not Found';
             let onSite = '';
 
-            // Loop through data to find the user based on BadgeID
-            for (const row of rows) {
-                const columns = row.split(',');
-                if (columns[0] === badgeID) {
-                    userName = columns[1];
-                    onSite = columns[2];
+            // Loop through JSON data to find the user based on BadgeID
+            for (const row of jsonData) {
+                if (row.BadgeID === badgeID) {
+                    userName = row.Name;
+                    onSite = row['On Site'];
                     break;
                 }
             }
