@@ -1,23 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>User Lookup</title>
-    <!-- Add this script tag in the <head> section of your HTML -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.3/xlsx.full.min.js"></script>
-
+    <title>Search BadgeID</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <h1>User Lookup func</h1>
-    <form id="userLookupForm">
-        <label for="badgeID">Enter BadgeID:</label>
-        <input type="text" id="badgeID" name="badgeID" required>
-        <br><br>
-        <label for="userName">User Name:</label>
-        <span id="userName"></span>
-        <br><br>
-        <label for="onSite">On Site:</label>
-        <span id="onSite"></span>
-    </form>
-    <script src="lookup.js"></script>
+    <label for="badgeIdInput">Enter BadgeID:</label>
+    <input type="text" id="badgeIdInput">
+    <button onclick="searchBadgeID()">Search</button>
+    <p id="result"></p>
+
+    <script>
+        function searchBadgeID() {
+            var badgeId = document.getElementById("badgeIdInput").value;
+            var apiUrl = "https://pomry.sharepoint.com/:x:/r/sites/ADM-Canada/_api/web/GetFileByServerRelativeUrl('/sites/ADM-Canada/Shared%20Documents/Book.xlsx')/Sheets('Sheet1')/UsedRange?$filter=BadgeID eq '" + badgeId + "'";
+
+            $.ajax({
+                url: apiUrl,
+                method: "GET",
+                headers: {
+                    "Accept": "application/json; odata=verbose"
+                },
+                success: function (data) {
+                    if (data.d && data.d.results && data.d.results.length > 0) {
+                        var name = data.d.results[0].Name;
+                        document.getElementById("result").innerHTML = "Name: " + name;
+                    } else {
+                        document.getElementById("result").innerHTML = "BadgeID not found.";
+                    }
+                },
+                error: function (error) {
+                    console.log("Error: " + JSON.stringify(error));
+                    document.getElementById("result").innerHTML = "An error occurred.";
+                }
+            });
+        }
+    </script>
 </body>
 </html>
