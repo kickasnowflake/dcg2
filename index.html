@@ -31,10 +31,12 @@
                 },
                 error: function (error) {
                     console.log("Error: " + JSON.stringify(error));
-                    document.getElementById("result").innerHTML = "An error occurred.";
+                    var errorMessage = "An error occurred: " + error.responseText;
+                    document.getElementById("result").innerHTML = errorMessage;
                 }
             });
         }
     </script>
 </body>
 </html>
+
