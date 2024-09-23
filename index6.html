@@ -1,0 +1,135 @@
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Employee Break Tracker</title>
+      <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&amp;display=swap" rel="stylesheet">
+      <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+      <script type="module" src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js"></script>
+      <script type="module" src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js"></script>
+      <script type="module" src="assets/js/frontend.js"></script>
+      <script type="module" src="assets/js/backend.js"></script>
+   </head>
+   <body>
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+         <!-- Image Container -->
+         <div style="flex-shrink: 0;">
+            <img src="assets/images/DCG2 Ops_HORZ_DK_2CLR.png" style="width:237px;height:101px; margin-top: 2px;">
+         </div>
+         <!-- Title Container -->
+         <div style="flex-grow: 1; text-align: center;">
+            <h1 style="font-weight: bold;">Break Time Tracker</h1>
+         </div>
+      </div>
+      <br>
+      <!-- Container for Break Duration, Badge Scan Sections, and Summary -->
+      <div style="display: flex; justify-content: space-between; width: 100%;">
+         <!-- Break Duration Input -->
+         <div class="sectionInput" id="duration-section" style="width: 25%; margin-right: 10px; height: 112px; padding: 5px;">
+            <h3 style="margin: 10;">Break Duration</h3>
+            <div style="display: flex; justify-content: space-between; gap: 10px;">
+               <input type="text" id="break-duration" placeholder="(minutes)" style="flex: 1; padding: 5px;">
+               <button id="set-duration-btn" style="padding: 5px 10px;">Submit</button>
+            </div>
+            <p id="message" style="margin: 0;"></p>
+         </div>
+         <!-- Badge Scan Section -->
+         <div class="sectionInput" id="scan-section" style="width: 25%; margin-right: 10px; display: none; height: 112px; padding: 5px;">
+            <h3 style="margin: 10;">Scan Badge</h3>
+            <form id="scan-form" style="display: flex; justify-content: space-between; gap: 10px;">
+               <input type="text" id="employee-id" placeholder="Scan or Enter Badge ID" style="flex: 1; padding: 5px;">
+            </form>
+         </div>
+         <!-- Summary Section -->
+         <div class="summary" style="width: 70%; display: flex; flex-direction: row; justify-content: space-between; gap: 10px; margin-left: 5px;">
+            <div class="summary-item" style="width: 30%; text-align: center;">
+               <h2 id="on-break-count">0</h2>
+               <p>Employees on Break</p>
+            </div>
+            <div class="summary-item" style="width: 30%; text-align: center;">
+               <h2 id="returned-count">0</h2>
+               <p>Employees Returned</p>
+            </div>
+            <div class="summary-item" style="width: 30%; text-align: center;">
+               <h2 id="exceeded-count">0</h2>
+               <p>Exceeded Break Time</p>
+            </div>
+         </div>
+      </div>
+      <!-- Main Data Section -->
+      <div class="container">
+         <!-- Employees on Break -->
+         <div class="section" style="flex: 1; margin-right: 10px;">
+            <h3>Employees Currently on Break</h3>
+            <div class="table-container">
+               <table>
+                  <thead>
+                     <tr>
+                        <th>Badge ID</th>
+                        <th>Break Start Time</th>
+                     </tr>
+                  </thead>
+                  <tbody id="on-break-list">
+                     <!-- Data will be populated here -->
+                  </tbody>
+               </table>
+            </div>
+         </div>
+         <!-- Employees Back from Break -->
+         <div class="section" style="flex: 1;">
+            <h3>Break History</h3>
+            <div class="table-container">
+               <table>
+                  <thead>
+                     <tr>
+                        <th>Badge ID</th>
+                        <th>Break Start Time</th>
+                        <th>Break End Time</th>
+                        <th>Total Break Time (minutes)</th>
+                     </tr>
+                  </thead>
+                  <tbody id="break-history-list">
+                     <!-- Data will be populated here -->
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      </div>
+      <br>
+      <!-- Exceeded Break Time and Chart Section -->
+      <div class="container" style="display: flex; justify-content: space-between;">
+         <!-- Exceeded Break Time -->
+         <div class="section" style="flex: 1; margin-right: 10px;">
+            <h3>Employees Exceeding Break Time</h3>
+            <div class="table-container">
+               <table>
+                  <thead>
+                     <tr>
+                        <th>Badge ID</th>
+                        <th>Total Break Time (minutes)</th>
+                     </tr>
+                  </thead>
+                  <tbody id="exceeded-list">
+                     <!-- Data will be populated here -->
+                  </tbody>
+               </table>
+            </div>
+         </div>
+         <!-- Optional: Data Visualization -->
+         <div class="chart" style="flex: 1;">
+            <h3>Break Time Analysis</h3>
+            <div class="table-container">
+               <canvas id="break-chart" class="chart-canvas"></canvas>
+            </div>
+         </div>
+      </div>
+      </div>
+      <!-- Include jQuery and Chart.js (if you use them) -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <!-- Frontend Script -->
+      <script src="assets/js/frontend.js"></script>
+      <!-- Backend Script -->
+      <script src="assets/js/backend.js"></script>
+   </body>
+</html>

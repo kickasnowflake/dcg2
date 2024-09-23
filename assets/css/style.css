@@ -1,0 +1,142 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f1f3f4;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+h1 {
+    text-align: center;
+    color: #234b79;
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+}
+
+.summary {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 40px;
+}
+
+.summary-item {
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    width: 28%;
+    text-align: center;
+}
+
+.summary-item h2 {
+    margin: 0;
+    font-size: 2.5rem;
+    color: #4a90e2;
+}
+
+.summary-item p {
+    margin: 0;
+    font-size: 1rem;
+    color: #888;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.section {
+    background-color: #ffffff;
+    padding: 10px; /* Reduced padding */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: auto; /* Allows div to adjust based on content */
+    min-height: 50px; /* Optional: sets a minimum height */    
+}
+
+.sectionInput {
+    background-color: #ffffff;
+    padding: 10px; /* Reduced padding */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: auto; /* Allows div to adjust based on content */
+    min-height: 50px; /* Optional: sets a minimum height */    
+}
+
+h3 {
+    font-size: 1.5rem;
+    color: #4a90e2;
+    margin-bottom: 20px;
+}
+
+.table-container {
+    max-height: 200px; /* Adjust height to fit 5 records */
+    overflow-y: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+th {
+    background-color: #f2f2f2;
+    text-align: left;
+}
+
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.chart {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    grid-column: span 2;
+}
+
+@media (max-width: 768px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+
+    .summary {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .summary-item {
+        width: 80%;
+        margin-bottom: 20px;
+    }
+}
+.child-row {
+    display: none;
+}
+
+.toggle-button {
+    cursor: pointer;
+    background-color: #f2f2f2;
+    border: none;
+    padding: 5px;
+    font-size: 14px;
+}
+.chart canvas {
+    max-width: 400px; /* Adjust width */
+    max-height: 400px; /* Adjust height */
+    margin: 0 auto;    /* Center the chart */
+}
+#break-chart {
+    max-width: 400px;
+    max-height: 400px;
+    margin: auto;
+}
